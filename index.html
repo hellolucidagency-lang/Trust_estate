@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trust Estate | ترست إستيت - عقارات فاخرة وموثوقة</title>
+<meta name="description" content="Trust Estate - منصتك الموثوقة لأفضل العقارات السكنية والتجارية والاستثمارية">
+
+<!-- ============================================================ -->
+<!-- Meta Pixel Placeholder                                        -->
+<!-- ضع كود بيكسل ميتا هنا واستبدل PIXEL_ID برقم البيكسل الخاص بك    -->
+<!-- ============================================================ -->
+<!-- Add Meta Pixel Code Here -->
+<!--
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
+/></noscript>
+-->
+<!-- End Meta Pixel Placeholder -->
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+
+        fontFamily: {
+          display: ['Cairo', 'sans-serif'],
+          body: ['Tajawal', 'sans-serif'],
+        },
+        colors: {
+          ink: '#16211C',
+          muted: '#66766E',
+          cream: '#F8F5EF',
+          creamdark: '#EFE9DD',
+          emerald: {
+            DEFAULT: '#1F4A3D',
+            dark: '#0B1F1A',
+            light: '#2E6350',
+          },
+          gold: {
+            DEFAULT: '#C9A45C',
+            light: '#E4C989',
+            dark: '#9C7C3E',
+          },
+        },
+        boxShadow: {
+          card: '0 10px 30px -12px rgba(11,31,26,0.25)',
+          goldGlow: '0 0 0 1px rgba(201,164,92,0.4)',
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Tajawal', sans-serif; background-color: #F8F5EF; color: #16211C; }
+  .font-display { font-family: 'Cairo', sans-serif; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #F8F5EF; }
+  ::-webkit-scrollbar-thumb { background: #C9A45C; border-radius: 10px; }
+
+  /* Blueprint divider - signature motif */
+  .blueprint-divider {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(to left, transparent, rgba(201,164,92,0.6) 15%, rgba(201,164,92,0.6) 85%, transparent);
+  }
+  .blueprint-divider::before,
+  .blueprint-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 6px; height: 6px;
+    transform: translateY(-50%) rotate(45deg);
+    background: #C9A45C;
+  }
+  .blueprint-divider::before { right: calc(15% - 3px); }
+  .blueprint-divider::after { left: calc(15% - 3px); }
+
+  /* Property card */
+  .prop-card { transition: transform .35s ease, box-shadow .35s ease; }
+  .prop-card:hover { transform: translateY(-6px); }
+  .prop-img-wrap { overflow: hidden; }
+  .prop-img-wrap img { transition: transform .6s ease; }
+  .prop-card:hover .prop-img-wrap img { transform: scale(1.08); }
+
+  /* Skeleton loading */
+  .skeleton {
+    background: linear-gradient(90deg, #EFE9DD 25%, #F8F5EF 37%, #EFE9DD 63%);
+    background-size: 400% 100%;
+    animation: skeleton-loading 1.4s ease infinite;
+  }
+  @keyframes skeleton-loading {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+  }
+
+  /* Lightbox */
+  #lightbox { backdrop-filter: blur(6px); }
+  #lightbox img { transition: opacity .25s ease; }
+  .lightbox-nav-btn { transition: background-color .2s ease, transform .2s ease; }
+  .lightbox-nav-btn:hover { background-color: rgba(201,164,92,0.9); transform: scale(1.08); }
+
+  /* Thumbnails */
+  .thumb-btn { transition: border-color .2s ease, opacity .2s ease; opacity: .55; }
+  .thumb-btn.active-thumb { border-color: #C9A45C; opacity: 1; }
+
+  /* Modal */
+  #detailModal { backdrop-filter: blur(4px); }
+
+  /* Nav underline */
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: '';
+    position: absolute; right: 0; bottom: -4px;
+    width: 0; height: 2px; background: #C9A45C;
+    transition: width .3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  /* Fade in */
+  .fade-in { animation: fadeIn .6s ease both; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(14px);} to { opacity:1; transform: translateY(0);} }
+
+  /* Hero building line motif */
+  .hero-lines { stroke: #C9A45C; stroke-width: 1; fill: none; opacity: .35; }
+
+  input[type="text"]::placeholder, input[type="search"]::placeholder { color: #A3AFA8; }
+
+  .badge-ribbon {
+    position: absolute; top: 14px; right: -6px;
+    background: #C9A45C; color: #0B1F1A;
+    font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 12px;
+    padding: 4px 14px 4px 10px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 8px 100%, 0 70%);
+  }
+
+  .whatsapp-float {
+    box-shadow: 0 8px 24px -6px rgba(37,211,102,0.55);
+  }
+
+  select:focus, input:focus { outline: 2px solid #C9A45C; outline-offset: 1px; }
+
+  @media (max-width: 640px) {
+    .hero-headline { font-size: 2.1rem !important; line-height: 1.25 !important; }
+  }
+</style>
+</head>
+
+<body class="bg-cream text-ink antialiased">
+
+<!-- =============================== -->
+<!-- HEADER / NAV                    -->
+<!-- =============================== -->
+<header id="siteHeader" class="fixed top-0 inset-x-0 z-40 transition-all duration-300 bg-emerald-dark/95 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex items-center justify-between h-20">
+      <a href="#home" class="flex items-center gap-2 shrink-0">
+        <span class="w-10 h-10 rounded-sm border border-gold flex items-center justify-center">
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="#C9A45C" stroke-width="1.5">
+            <path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.5 21v-6.5h5V21" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="font-display">
+          <span class="block text-lg font-800 text-cream leading-none">Trust Estate</span>
+          <span class="block text-[11px] tracking-[0.25em] text-gold leading-none mt-1">ترست إستيت</span>
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-10 font-display text-sm text-cream/90">
+        <a href="#home" class="nav-link">الرئيسية</a>
+        <a href="#properties" class="nav-link">العقارات</a>
+        <a href="#about" class="nav-link">من نحن</a>
+        <a href="#contact" class="nav-link">تواصل معنا</a>
+      </nav>
+
+      <div class="hidden lg:flex items-center gap-3">
+        <a id="navGoogleBtn" href="#" target="_blank" rel="noopener"
+           class="text-xs font-display font-700 text-cream/90 border border-cream/25 hover:border-gold hover:text-gold transition rounded-sm px-4 py-2.5">
+          صفحتنا على جوجل
+        </a>
+        <a id="navWhatsBtn" href="#" target="_blank" rel="noopener"
+           class="flex items-center gap-2 bg-gold hover:bg-gold-light text-emerald-dark font-display font-800 text-sm rounded-sm px-5 py-2.5 transition">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18a7.93 7.93 0 0 1-4.06-1.12l-.29-.17-3 .79.8-2.93-.19-.3A7.95 7.95 0 1 1 12 20zm4.4-5.9c-.24-.12-1.4-.7-1.62-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1-.37-1.9-1.18-.7-.62-1.18-1.4-1.32-1.64-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.1.16 1.52.1.46-.07 1.4-.57 1.6-1.12.2-.55.2-1.02.14-1.12-.06-.1-.22-.16-.46-.28z"/></svg>
+          واتساب
+        </a>
+      </div>
+
+      <button id="mobileMenuBtn" class="lg:hidden text-cream p-2" aria-label="القائمة">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobileMenu" class="hidden lg:hidden bg-emerald-dark border-t border-cream/10">
+    <div class="px-5 py-4 flex flex-col gap-4 font-display text-cream/90">
+      <a href="#home" class="mobile-nav-link">الرئيسية</a>
+      <a href="#properties" class="mobile-nav-link">العقارات</a>
+      <a href="#about" class="mobile-nav-link">من نحن</a>
+      <a href="#contact" class="mobile-nav-link">تواصل معنا</a>
+      <a id="mobileWhatsBtn" href="#" target="_blank" rel="noopener" class="bg-gold text-emerald-dark text-center font-800 rounded-sm py-2.5 mt-2">تواصل عبر واتساب</a>
+    </div>
+  </div>
+</header>
+
+<!-- =============================== -->
+<!-- HERO                             -->
+<!-- =============================== -->
+<section id="home" class="relative bg-emerald-dark pt-40 pb-28 overflow-hidden">
+  <svg class="absolute inset-0 w-full h-full hero-lines" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+    <path d="M0 550 L150 420 L260 460 L400 340 L520 400 L680 260 L820 330 L980 200 L1200 320" />
+    <path d="M0 620 L150 500 L260 540 L400 430 L520 480 L680 360 L820 420 L980 300 L1200 400" />
+    <circle cx="980" cy="200" r="4" fill="#C9A45C" stroke="none" opacity="0.8"/>
+    <circle cx="400" cy="340" r="4" fill="#C9A45C" stroke="none" opacity="0.8"/>
+  </svg>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative">
+    <div class="grid lg:grid-cols-12 gap-10 items-end">
+      <div class="lg:col-span-7 fade-in">
+        <span class="inline-flex items-center gap-2 text-gold font-display text-xs tracking-[0.3em] mb-6">
+          <span class="w-8 h-px bg-gold"></span> عقارات موثوقة . استثمار آمن
+        </span>
+        <h1 class="hero-headline font-display font-900 text-cream text-4xl md:text-6xl leading-[1.15] mb-6">
+          نبني الثقة قبل أن<br class="hidden md:block"> نبني <span class="text-gold">العقار</span>
+        </h1>
+        <p class="text-cream/70 text-base md:text-lg leading-loose max-w-xl mb-10">
+          في Trust Estate، نقدّم لك مجموعة مختارة بعناية من الوحدات السكنية والتجارية والاستثمارية،
+          مدعومة ببيانات دقيقة وتواصل مباشر مع فريقنا العقاري المتخصص.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#properties" class="bg-gold hover:bg-gold-light text-emerald-dark font-display font-800 rounded-sm px-8 py-4 transition">تصفح العقارات</a>
+          <a id="heroGoogleBtn" href="#" target="_blank" rel="noopener" class="border border-cream/30 hover:border-gold hover:text-gold text-cream font-display font-700 rounded-sm px-8 py-4 transition flex items-center gap-2">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            زوروا صفحتنا على خرائط جوجل
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5">
+        <div class="grid grid-cols-3 gap-3 bg-cream/[0.04] border border-cream/10 rounded-md p-6 backdrop-blur">
+          <div class="text-center border-l border-cream/10 last:border-none">
+            <p id="statCount" class="font-display font-900 text-3xl text-gold">—</p>
+            <p class="text-cream/60 text-xs mt-2 font-display">عقار متاح</p>
+          </div>
+          <div class="text-center border-l border-cream/10 last:border-none">
+            <p id="statAreas" class="font-display font-900 text-3xl text-gold">—</p>
+            <p class="text-cream/60 text-xs mt-2 font-display">منطقة</p>
+          </div>
+          <div class="text-center">
+            <p class="font-display font-900 text-3xl text-gold">15+</p>
+            <p class="text-cream/60 text-xs mt-2 font-display">سنة خبرة</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== -->
+<!-- FILTER BAR                       -->
+<!-- =============================== -->
+<section class="bg-cream border-b border-creamdark">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-6">
+    <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+      <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+        <select id="filterType" class="bg-white border border-creamdark rounded-sm px-4 py-3 text-sm font-display text-ink w-full sm:w-48">
+          <option value="">كل الأقسام</option>
+        </select>
+        <select id="filterLocation" class="bg-white border border-creamdark rounded-sm px-4 py-3 text-sm font-display text-ink w-full sm:w-48">
+          <option value="">كل المناطق</option>
+        </select>
+        <select id="sortPrice" class="bg-white border border-creamdark rounded-sm px-4 py-3 text-sm font-display text-ink w-full sm:w-48">
+          <option value="">ترتيب حسب السعر</option>
+          <option value="asc">الأقل سعراً أولاً</option>
+          <option value="desc">الأعلى سعراً أولاً</option>
+        </select>
+      </div>
+      <div class="relative w-full md:w-72">
+        <input id="searchInput" type="text" placeholder="ابحث بالاسم أو المنطقة..." class="bg-white border border-creamdark rounded-sm ps-4 pe-10 py-3 text-sm w-full">
+        <svg class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M18 10.5A7.5 7.5 0 1 1 3 10.5a7.5 7.5 0 0 1 15 0z"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== -->
+<!-- PROPERTIES                       -->
+<!-- =============================== -->
+<section id="properties" class="max-w-7xl mx-auto px-5 md:px-8 py-20">
+  <div class="text-center max-w-2xl mx-auto mb-14">
+    <span class="text-gold-dark font-display text-xs tracking-[0.3em]">وحداتنا المختارة</span>
+    <h2 class="font-display font-800 text-3xl md:text-4xl mt-3 mb-5">أحدث العروض العقارية</h2>
+    <div class="blueprint-divider w-40 mx-auto"></div>
+  </div>
+
+  <!-- Loading skeletons -->
+  <div id="loadingState" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="skeleton h-96 rounded-md"></div>
+    <div class="skeleton h-96 rounded-md hidden sm:block"></div>
+    <div class="skeleton h-96 rounded-md hidden lg:block"></div>
+  </div>
+
+  <!-- Setup notice (shown if SHEET_URL not configured) -->
+  <div id="setupNotice" class="hidden text-center bg-white border border-dashed border-gold rounded-md p-10 max-w-2xl mx-auto">
+    <svg class="w-10 h-10 text-gold mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007M4.93 4.93l14.14 14.14M12 3a9 9 0 100 18 9 9 0 000-18z"/></svg>
+    <h3 class="font-display font-800 text-lg mb-2">لم يتم ربط مصدر البيانات بعد</h3>
+    <p class="text-muted text-sm leading-loose">
+      قم بتعديل المتغير <code class="bg-creamdark px-2 py-0.5 rounded text-xs">SHEET_URL</code> داخل الكود
+      وضع رابط تصدير CSV الخاص بملف Google Sheets ليتم عرض العقارات هنا تلقائياً.
+    </p>
+  </div>
+
+  <!-- Error state -->
+  <div id="errorState" class="hidden text-center bg-white border border-red-200 rounded-md p-10 max-w-2xl mx-auto">
+    <h3 class="font-display font-800 text-lg mb-2 text-red-500">تعذّر تحميل بيانات العقارات</h3>
+    <p class="text-muted text-sm leading-loose mb-5">تأكد من أن رابط الشيت صحيح وأن الملف منشور بصيغة CSV ومتاح للجميع.</p>
+    <button id="retryBtn" class="bg-emerald text-cream font-display font-700 rounded-sm px-6 py-2.5">إعادة المحاولة</button>
+  </div>
+
+  <!-- Empty state after filtering -->
+  <div id="emptyState" class="hidden text-center py-16">
+    <p class="text-muted font-display">لا توجد عقارات مطابقة لبحثك حالياً.</p>
+  </div>
+
+  <!-- Property grid -->
+  <div id="propertyGrid" class="hidden grid sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+</section>
+
+<!-- =============================== -->
+<!-- ABOUT                            -->
+<!-- =============================== -->
+<section id="about" class="bg-emerald-dark py-24">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-12 gap-14 items-center">
+    <div class="lg:col-span-5">
+      <span class="text-gold font-display text-xs tracking-[0.3em]">من نحن</span>
+      <h2 class="font-display font-800 text-3xl md:text-4xl text-cream mt-3 mb-6 leading-snug">
+        شريكك العقاري الموثوق في كل خطوة
+      </h2>
+      <p class="text-cream/70 leading-loose mb-8">
+        تأسست Trust Estate على مبدأ واحد: الشفافية أولاً. نرافق عملاءنا من لحظة البحث عن الوحدة المناسبة
+        وحتى إتمام الصفقة، بفريق استشاري يعرف السوق العقاري عن قرب ويقدّم بيانات دقيقة لكل عقار.
+      </p>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="border-r-2 border-gold pr-4">
+          <p class="font-display font-800 text-cream text-lg mb-1">تقييم دقيق</p>
+          <p class="text-cream/50 text-sm">أسعار مدروسة تتماشى مع السوق</p>
+        </div>
+        <div class="border-r-2 border-gold pr-4">
+          <p class="font-display font-800 text-cream text-lg mb-1">متابعة مستمرة</p>
+          <p class="text-cream/50 text-sm">تواصل مباشر عبر واتساب</p>
+        </div>
+      </div>
+    </div>
+    <div class="lg:col-span-7">
+      <div class="grid grid-cols-2 gap-5">
+        <div class="bg-cream/[0.04] border border-cream/10 rounded-md p-8">
+          <p class="font-display font-900 text-4xl text-gold mb-2">98%</p>
+          <p class="text-cream/60 text-sm">نسبة رضا العملاء</p>
+        </div>
+        <div class="bg-cream/[0.04] border border-cream/10 rounded-md p-8 mt-10">
+          <p class="font-display font-900 text-4xl text-gold mb-2">+500</p>
+          <p class="text-cream/60 text-sm">صفقة ناجحة</p>
+        </div>
+        <div class="bg-cream/[0.04] border border-cream/10 rounded-md p-8">
+          <p class="font-display font-900 text-4xl text-gold mb-2">24/7</p>
+          <p class="text-cream/60 text-sm">دعم عبر واتساب</p>
+        </div>
+        <div class="bg-cream/[0.04] border border-cream/10 rounded-md p-8 mt-10">
+          <p class="font-display font-900 text-4xl text-gold mb-2">15+</p>
+          <p class="text-cream/60 text-sm">سنة خبرة بالسوق</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== -->
+<!-- CONTACT / FOOTER                 -->
+<!-- =============================== -->
+<footer id="contact" class="bg-ink text-cream/80">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-16 grid md:grid-cols-3 gap-12">
+    <div>
+      <span class="font-display font-800 text-cream text-xl">Trust Estate</span>
+      <p class="mt-4 text-sm leading-loose text-cream/50">
+        منصتك الأولى لاكتشاف أفضل الفرص العقارية بثقة وشفافية كاملة.
+      </p>
+    </div>
+    <div>
+      <p class="font-display font-700 text-cream mb-4">تواصل معنا</p>
+      <ul class="space-y-3 text-sm text-cream/60">
+        <li id="footerPhoneLine">هاتف: —</li>
+        <li>البريد: info@trustestate.com</li>
+        <li>العنوان: يتم تحديده لاحقاً</li>
+      </ul>
+    </div>
+    <div>
+      <p class="font-display font-700 text-cream mb-4">روابط سريعة</p>
+      <div class="flex flex-col gap-3 text-sm">
+        <a id="footerWhatsBtn" href="#" target="_blank" rel="noopener" class="text-cream/60 hover:text-gold transition">تواصل عبر واتساب</a>
+        <a id="footerGoogleBtn" href="#" target="_blank" rel="noopener" class="text-cream/60 hover:text-gold transition">صفحتنا على خرائط جوجل (Google Business)</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-cream/10 py-6 text-center text-xs text-cream/40">
+    © <span id="yearNow"></span> Trust Estate — جميع الحقوق محفوظة
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a id="floatingWhats" href="#" target="_blank" rel="noopener"
+   class="whatsapp-float fixed bottom-6 left-6 z-40 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center">
+  <svg viewBox="0 0 24 24" class="w-7 h-7 text-white" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18a7.93 7.93 0 0 1-4.06-1.12l-.29-.17-3 .79.8-2.93-.19-.3A7.95 7.95 0 1 1 12 20zm4.4-5.9c-.24-.12-1.4-.7-1.62-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1-.37-1.9-1.18-.7-.62-1.18-1.4-1.32-1.64-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.1.16 1.52.1.46-.07 1.4-.57 1.6-1.12.2-.55.2-1.02.14-1.12-.06-.1-.22-.16-.46-.28z"/></svg>
+</a>
+
+<!-- =============================== -->
+<!-- PROPERTY DETAIL MODAL            -->
+<!-- =============================== -->
+<div id="detailModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/70 p-4">
+  <div class="bg-cream rounded-md w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+    <button id="closeModalBtn" class="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-ink/80 text-cream flex items-center justify-center hover:bg-gold hover:text-ink transition">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+    <div id="modalMainImgWrap" class="relative bg-ink">
+      <img id="modalMainImg" src="" alt="" class="w-full h-72 md:h-96 object-cover cursor-zoom-in">
+      <button id="modalPrevBtn" class="lightbox-nav-btn absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-ink/50 text-cream flex items-center justify-center">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button id="modalNextBtn" class="lightbox-nav-btn absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-ink/50 text-cream flex items-center justify-center">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg>
+      </button>
+    </div>
+
+    <div id="modalThumbs" class="flex gap-2 p-4 overflow-x-auto"></div>
+
+    <div class="p-6 md:p-8 pt-2">
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+        <span id="modalType" class="inline-block bg-emerald text-cream text-xs font-display font-700 px-3 py-1.5 rounded-sm"></span>
+        <span id="modalPrice" class="font-display font-900 text-2xl text-gold-dark"></span>
+      </div>
+      <h3 id="modalTitle" class="font-display font-800 text-2xl mb-3"></h3>
+      <div class="flex flex-wrap gap-5 text-sm text-muted mb-6 font-display">
+        <span id="modalLocation" class="flex items-center gap-1.5"></span>
+        <span id="modalArea" class="flex items-center gap-1.5"></span>
+      </div>
+      <p id="modalDesc" class="text-ink/80 leading-loose mb-8"></p>
+      <a id="modalWhatsBtn" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#25D366] text-white font-display font-700 rounded-sm px-6 py-3.5">
+        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18a7.93 7.93 0 0 1-4.06-1.12l-.29-.17-3 .79.8-2.93-.19-.3A7.95 7.95 0 1 1 12 20zm4.4-5.9c-.24-.12-1.4-.7-1.62-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1-.37-1.9-1.18-.7-.62-1.18-1.4-1.32-1.64-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.1.16 1.52.1.46-.07 1.4-.57 1.6-1.12.2-.55.2-1.02.14-1.12-.06-.1-.22-.16-.46-.28z"/></svg>
+        تواصل عبر واتساب لهذا العقار
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- =============================== -->
+<!-- LIGHTBOX (full screen zoom)      -->
+<!-- =============================== -->
+<div id="lightbox" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/90 p-4">
+  <button id="lightboxCloseBtn" class="absolute top-6 left-6 w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-gold hover:text-ink transition">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+  </button>
+  <span id="lightboxCounter" class="absolute top-7 right-7 text-white/70 text-sm font-display"></span>
+  <button id="lightboxPrevBtn" class="lightbox-nav-btn absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <img id="lightboxImg" src="" alt="" class="max-w-full max-h-[85vh] object-contain select-none">
+  <button id="lightboxNextBtn" class="lightbox-nav-btn absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg>
+  </button>
+</div>
+
+<script>
+/* ============================================================
+   إعدادات عامة — قم بتعديل القيم التالية حسب بيانات شركتك
+   ============================================================ */
+const SHEET_URL =https://docs.google.com/spreadsheets/d/e/2PACX-1vTUKW_HTjEFif2VPe_5kSj6K0dp_YrdHvdS1KNUNgLfv-6Va_JyHCWrnPtb6i8CO0voQ_G206tjog4H/pub?output=csv"; // رابط تصدير CSV من Google Sheets
+const WHATSAPP_NUMBER = // مثال: 201234567890 (بدون + وبدون أصفار زائدة)
+const GOOGLE_BUSINESS_URL = "PUT_YOUR_GOOGLE_BUSINESS_PROFILE_URL_HERE"; // رابط صفحة جوجل بزنس / خرائط جوجل
+
+/* ============================================================
+   عناصر DOM
+   ============================================================ */
+const loadingState   = document.getElementById('loadingState');
+const setupNotice    = document.getElementById('setupNotice');
+const errorState     = document.getElementById('errorState');
+const emptyState     = document.getElementById('emptyState');
+const propertyGrid   = document.getElementById('propertyGrid');
+const filterType     = document.getElementById('filterType');
+const filterLocation = document.getElementById('filterLocation');
+const sortPrice      = document.getElementById('sortPrice');
+const searchInput    = document.getElementById('searchInput');
+const statCount      = document.getElementById('statCount');
+const statAreas      = document.getElementById('statAreas');
+
+let allProperties = [];
+
+/* ============================================================
+   تجهيز روابط واتساب / جوجل بزنس الثابتة في الصفحة
+   ============================================================ */
+function buildWhatsLink(customText) {
+  const num = (WHATSAPP_NUMBER || '').replace(/[^0-9]/g, '');
+  const text = encodeURIComponent(customText || 'مرحباً، أرغب بالاستفسار عن العقارات المتاحة لديكم.');
+  return num ? `https://wa.me/${num}?text=${text}` : '#';
+}
+
+function initStaticLinks() {
+  const generalWhats = buildWhatsLink();
+  ['navWhatsBtn','mobileWhatsBtn','footerWhatsBtn','floatingWhats'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = generalWhats;
+  });
+  ['navGoogleBtn','heroGoogleBtn','footerGoogleBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = (GOOGLE_BUSINESS_URL && !GOOGLE_BUSINESS_URL.startsWith('PUT_YOUR')) ? GOOGLE_BUSINESS_URL : '#';
+  });
+  const phoneLine = document.getElementById('footerPhoneLine');
+  if (phoneLine && WHATSAPP_NUMBER && !WHATSAPP_NUMBER.startsWith('PUT_YOUR')) {
+    phoneLine.textContent = 'هاتف: ' + WHATSAPP_NUMBER;
+  }
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+}
+
+/* ============================================================
+   محلل ملفات CSV (يدعم الحقول المقتبسة والفواصل داخل الاقتباس)
+   ============================================================ */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (inQuotes) {
+      if (char === '"' && next === '"') { field += '"'; i++; }
+      else if (char === '"') { inQuotes = false; }
+      else { field += char; }
+    } else {
+      if (char === '"') { inQuotes = true; }
+      else if (char === ',') { row.push(field); field = ''; }
+      else if (char === '\r') { /* ignore */ }
+      else if (char === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else { field += char; }
+    }
+  }
+  if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim() !== ''));
+}
+
+function findColumnIndex(headers, keywords) {
+  for (let i = 0; i < headers.length; i++) {
+    const h = (headers[i] || '').trim();
+    if (keywords.some(k => h.includes(k))) return i;
+  }
+  return -1;
+}
+
+function csvToProperties(csvText) {
+  const rows = parseCSV(csvText);
+  if (rows.length < 2) return [];
+
+  const headers = rows[0];
+  const idx = {
+    type:     findColumnIndex(headers, ['القسم', 'النوع']),
+    price:    findColumnIndex(headers, ['السعر']),
+    location: findColumnIndex(headers, ['المنطقة', 'الموقع']),
+    area:     findColumnIndex(headers, ['المساحة']),
+    desc:     findColumnIndex(headers, ['الوصف']),
+    phone:    findColumnIndex(headers, ['تواصل', 'هاتف', 'جوال', 'رقم']),
+    images:   findColumnIndex(headers, ['صور']),
+    title:    findColumnIndex(headers, ['اسم', 'عنوان', 'العقار']),
+  };
+
+  const data = [];
+  for (let r = 1; r < rows.length; r++) {
+    const cols = rows[r];
+    if (!cols || cols.every(c => !c || !c.trim())) continue;
+
+    const imagesRaw = idx.images > -1 ? (cols[idx.images] || '') : '';
+    const images = imagesRaw.split(',').map(s => s.trim()).filter(Boolean);
+
+    data.push({
+      id: r,
+      type: idx.type > -1 ? (cols[idx.type] || '').trim() : '',
+      title: idx.title > -1 ? (cols[idx.title] || '').trim() : '',
+      price: idx.price > -1 ? (cols[idx.price] || '').trim() : '',
+      priceNumeric: idx.price > -1 ? parseFloat((cols[idx.price] || '').replace(/[^0-9.]/g, '')) || 0 : 0,
+      location: idx.location > -1 ? (cols[idx.location] || '').trim() : '',
+      area: idx.area > -1 ? (cols[idx.area] || '').trim() : '',
+      description: idx.desc > -1 ? (cols[idx.desc] || '').trim() : '',
+      phone: idx.phone > -1 ? (cols[idx.phone] || '').trim() : '',
+      images: images.length ? images : ['https://placehold.co/800x600/EFE9DD/66766E?text=Trust+Estate'],
+    });
+  }
+  return data;
+}
+
+/* ============================================================
+   واجهة العرض — بطاقات العقارات
+   ============================================================ */
+function formatPrice(p) {
+  if (!p) return 'السعر عند الطلب';
+  return /[a-zA-Zء-ي]/.test(p) ? p : p + ' جنيه';
+}
+
+function propertyWhatsLink(p) {
+  const num = (p.phone || WHATSAPP_NUMBER || '').replace(/[^0-9]/g, '');
+  const msg = `مرحباً، أنا مهتم بالعقار: ${p.title || p.type} في ${p.location}.`;
+  return num ? `https://wa.me/${num}?text=${encodeURIComponent(msg)}` : '#';
+}
+
+function renderCard(p) {
+  const card = document.createElement('div');
+  card.className = 'prop-card fade-in bg-white rounded-md shadow-card overflow-hidden relative border border-creamdark/60';
+  card.innerHTML = `
+    <div class="prop-img-wrap relative h-60 cursor-pointer" data-open-detail="${p.id}">
+      <span class="badge-ribbon">${p.type || 'عقار'}</span>
+      <img src="${p.images[0]}" alt="${p.title || p.type}" class="w-full h-full object-cover" loading="lazy">
+    </div>
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-display font-900 text-gold-dark text-lg">${formatPrice(p.price)}</span>
+      </div>
+      <h3 class="font-display font-700 text-lg mb-2 cursor-pointer hover:text-emerald transition" data-open-detail="${p.id}">
+        ${p.title || (p.type + ' - ' + p.location)}
+      </h3>
+      <div class="flex flex-wrap gap-4 text-xs text-muted font-display mb-4">
+        <span class="flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-4.2-7-7.9-7-11a7 7 0 1114 0c0 3.1-2.5 6.8-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          ${p.location || '—'}
+        </span>
+        <span class="flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg>
+          ${p.area ? p.area + ' م²' : '—'}
+        </span>
+      </div>
+      <p class="text-sm text-ink/60 leading-relaxed mb-5 line-clamp-2">${p.description || ''}</p>
+      <div class="flex gap-3">
+        <a href="${propertyWhatsLink(p)}" target="_blank" rel="noopener" class="flex-1 text-center bg-[#25D366] text-white text-sm font-display font-700 rounded-sm py-2.5">واتساب</a>
+        <button data-open-detail="${p.id}" class="flex-1 border border-emerald text-emerald text-sm font-display font-700 rounded-sm py-2.5">التفاصيل</button>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function renderGrid(list) {
+  propertyGrid.innerHTML = '';
+  if (!list.length) {
+    emptyState.classList.remove('hidden');
+    propertyGrid.classList.add('hidden');
+    return;
+  }
+  emptyState.classList.add('hidden');
+  propertyGrid.classList.remove('hidden');
+  list.forEach(p => propertyGrid.appendChild(renderCard(p)));
+
+  propertyGrid.querySelectorAll('[data-open-detail]').forEach(el => {
+    el.addEventListener('click', () => openDetailModal(parseInt(el.dataset.openDetail)));
+  });
+}
+
+/* ============================================================
+   الفلاتر والبحث
+   ============================================================ */
+function populateFilters(list) {
+  const types = [...new Set(list.map(p => p.type).filter(Boolean))];
+  const locations = [...new Set(list.map(p => p.location).filter(Boolean))];
+
+  filterType.innerHTML = '<option value="">كل الأقسام</option>' + types.map(t => `<option value="${t}">${t}</option>`).join('');
+  filterLocation.innerHTML = '<option value="">كل المناطق</option>' + locations.map(l => `<option value="${l}">${l}</option>`).join('');
+
+  statCount.textContent = list.length;
+  statAreas.textContent = locations.length;
+}
+
+function applyFilters() {
+  let list = [...allProperties];
+  const t = filterType.value;
+  const l = filterLocation.value;
+  const s = sortPrice.value;
+  const q = searchInput.value.trim().toLowerCase();
+
+  if (t) list = list.filter(p => p.type === t);
+  if (l) list = list.filter(p => p.location === l);
+  if (q) list = list.filter(p =>
+    (p.title || '').toLowerCase().includes(q) ||
+    (p.location || '').toLowerCase().includes(q) ||
+    (p.description || '').toLowerCase().includes(q)
+  );
+  if (s === 'asc') list.sort((a, b) => a.priceNumeric - b.priceNumeric);
+  if (s === 'desc') list.sort((a, b) => b.priceNumeric - a.priceNumeric);
+
+  renderGrid(list);
+}
+
+[filterType, filterLocation, sortPrice].forEach(el => el.addEventListener('change', applyFilters));
+searchInput.addEventListener('input', () => { clearTimeout(window._searchDebounce); window._searchDebounce = setTimeout(applyFilters, 250); });
+
+/* ============================================================
+   جلب البيانات من Google Sheets
+   ============================================================ */
+async function loadProperties() {
+  loadingState.classList.remove('hidden');
+  setupNotice.classList.add('hidden');
+  errorState.classList.add('hidden');
+  propertyGrid.classList.add('hidden');
+  emptyState.classList.add('hidden');
+
+  if (!SHEET_URL || SHEET_URL.startsWith('PUT_YOUR')) {
+    loadingState.classList.add('hidden');
+    setupNotice.classList.remove('hidden');
+    return;
+  }
+
+  try {
+    const res = await fetch(SHEET_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const csvText = await res.text();
+    allProperties = csvToProperties(csvText);
+
+    loadingState.classList.add('hidden');
+
+    if (!allProperties.length) {
+      propertyGrid.classList.remove('hidden');
+      renderGrid([]);
+      return;
+    }
+
+    populateFilters(allProperties);
+    renderGrid(allProperties);
+  } catch (err) {
+    console.error('تعذر تحميل بيانات العقارات:', err);
+    loadingState.classList.add('hidden');
+    errorState.classList.remove('hidden');
+  }
+}
+
+document.getElementById('retryBtn').addEventListener('click', loadProperties);
+
+/* ============================================================
+   نافذة تفاصيل العقار + المعرض المصغر
+   ============================================================ */
+const detailModal    = document.getElementById('detailModal');
+const modalMainImg   = document.getElementById('modalMainImg');
+const modalThumbs    = document.getElementById('modalThumbs');
+const modalType      = document.getElementById('modalType');
+const modalPrice     = document.getElementById('modalPrice');
+const modalTitle     = document.getElementById('modalTitle');
+const modalLocation  = document.getElementById('modalLocation');
+const modalArea      = document.getElementById('modalArea');
+const modalDesc      = document.getElementById('modalDesc');
+const modalWhatsBtn  = document.getElementById('modalWhatsBtn');
+
+let currentProperty = null;
+let currentImageIndex = 0;
+
+function openDetailModal(id) {
+  const p = allProperties.find(x => x.id === id);
+  if (!p) return;
+  currentProperty = p;
+  currentImageIndex = 0;
+
+  modalType.textContent = p.type || 'عقار';
+  modalPrice.textContent = formatPrice(p.price);
+  modalTitle.textContent = p.title || (p.type + ' - ' + p.location);
+  modalLocation.textContent = '📍 ' + (p.location || '—');
+  modalArea.textContent = '📐 ' + (p.area ? p.area + ' م²' : '—');
+  modalDesc.textContent = p.description || 'لا يوجد وصف إضافي لهذا العقار حالياً.';
+  modalWhatsBtn.href = propertyWhatsLink(p);
+
+  renderModalImage();
+  renderModalThumbs();
+
+  detailModal.classList.remove('hidden');
+  detailModal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderModalImage() {
+  modalMainImg.src = currentProperty.images[currentImageIndex];
+  modalMainImg.alt = currentProperty.title || currentProperty.type;
+}
+
+function renderModalThumbs() {
+  modalThumbs.innerHTML = '';
+  currentProperty.images.forEach((img, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'thumb-btn shrink-0 w-20 h-16 rounded-sm overflow-hidden border-2' + (i === currentImageIndex ? ' active-thumb' : ' border-transparent');
+    btn.innerHTML = `<img src="${img}" class="w-full h-full object-cover" alt="thumbnail">`;
+    btn.addEventListener('click', () => { currentImageIndex = i; renderModalImage(); updateActiveThumb(); });
+    modalThumbs.appendChild(btn);
+  });
+}
+
+function updateActiveThumb() {
+  [...modalThumbs.children].forEach((btn, i) => {
+    btn.classList.toggle('active-thumb', i === currentImageIndex);
+    btn.classList.toggle('border-transparent', i !== currentImageIndex);
+  });
+}
+
+function closeDetailModal() {
+  detailModal.classList.add('hidden');
+  detailModal.classList.remove('flex');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('closeModalBtn').addEventListener('click', closeDetailModal);
+detailModal.addEventListener('click', (e) => { if (e.target === detailModal) closeDetailModal(); });
+
+document.getElementById('modalPrevBtn').addEventListener('click', () => {
+  if (!currentProperty) return;
+  currentImageIndex = (currentImageIndex - 1 + currentProperty.images.length) % currentProperty.images.length;
+  renderModalImage(); updateActiveThumb();
+});
+document.getElementById('modalNextBtn').addEventListener('click', () => {
+  if (!currentProperty) return;
+  currentImageIndex = (currentImageIndex + 1) % currentProperty.images.length;
+  renderModalImage(); updateActiveThumb();
+});
+
+/* ============================================================
+   Lightbox — تكبير الصور بجودة كاملة
+   ============================================================ */
+const lightbox        = document.getElementById('lightbox');
+const lightboxImg      = document.getElementById('lightboxImg');
+const lightboxCounter  = document.getElementById('lightboxCounter');
+
+modalMainImg.addEventListener('click', () => openLightbox());
+
+function openLightbox() {
+  if (!currentProperty) return;
+  updateLightboxImage();
+  lightbox.classList.remove('hidden');
+  lightbox.classList.add('flex');
+}
+
+function updateLightboxImage() {
+  lightboxImg.src = currentProperty.images[currentImageIndex];
+  lightboxCounter.textContent = `${currentImageIndex + 1} / ${currentProperty.images.length}`;
+}
+
+function closeLightbox() {
+  lightbox.classList.add('hidden');
+  lightbox.classList.remove('flex');
+}
+
+document.getElementById('lightboxCloseBtn').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+document.getElementById('lightboxPrevBtn').addEventListener('click', () => {
+  currentImageIndex = (currentImageIndex - 1 + currentProperty.images.length) % currentProperty.images.length;
+  updateLightboxImage(); updateActiveThumb();
+});
+document.getElementById('lightboxNextBtn').addEventListener('click', () => {
+  currentImageIndex = (currentImageIndex + 1) % currentProperty.images.length;
+  updateLightboxImage(); updateActiveThumb();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('hidden')) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') document.getElementById('lightboxNextBtn').click();
+    if (e.key === 'ArrowRight') document.getElementById('lightboxPrevBtn').click();
+  } else if (!detailModal.classList.contains('hidden')) {
+    if (e.key === 'Escape') closeDetailModal();
+  }
+});
+
+/* ============================================================
+   القائمة المتنقلة (موبايل) + تأثير الهيدر عند التمرير
+   ============================================================ */
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+});
+
+const siteHeader = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 40) siteHeader.classList.add('shadow-lg');
+  else siteHeader.classList.remove('shadow-lg');
+});
+
+/* ============================================================
+   تشغيل الموقع
+   ============================================================ */
+initStaticLinks();
+loadProperties();
+</script>
+
+</body>
+</html>
