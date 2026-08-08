@@ -763,6 +763,14 @@ function findColumnIndex(headers, keywords) {
   return -1;
 }
 
+// يحسّن ويشحذ صور Cloudinary تلقائياً عند العرض (يعالج جزئياً صور تيليجرام المضغوطة)
+// لا يغيّر الملف الأصلي على Cloudinary، فقط يضيف تعليمات عرض في الرابط
+function enhanceCloudinaryUrl(url) {
+  if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
+  if (url.includes('/upload/q_auto') || url.includes('/upload/e_sharpen')) return url; // متحسّن بالفعل
+  return url.replace('/upload/', '/upload/q_auto:best,f_auto,e_sharpen:60,e_improve/');
+}
+
 function csvToProperties(csvText) {
   const rows = parseCSV(csvText);
   if (rows.length < 2) return [];
@@ -786,7 +794,7 @@ function csvToProperties(csvText) {
     if (!cols || cols.every(c => !c || !c.trim())) continue;
 
     const imagesRaw = idx.images > -1 ? (cols[idx.images] || '') : '';
-    const images = imagesRaw.split(',').map(s => s.trim()).filter(Boolean);
+    const images = imagesRaw.split(',').map(s => s.trim()).filter(Boolean).map(enhanceCloudinaryUrl);
 
     data.push({
       id: r,
