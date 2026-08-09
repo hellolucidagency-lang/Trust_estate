@@ -7,11 +7,8 @@
 <meta name="description" content="Trust Estate - خبرة 15 عاماً في التشطيبات، البيع، اللوكيشن، والإيجار، في دريم لاند والشيخ زايد وحي الأشجار وأشجار هايتس وحدائق أكتوبر">
 
 <!-- ============================================================ -->
-<!-- Meta Pixel Placeholder                                        -->
-<!-- ضع كود بيكسل ميتا هنا فور استلامه من فريق التسويق              -->
+<!-- Meta Pixel Code                                               -->
 <!-- ============================================================ -->
-<!-- Add Meta Pixel Code Here -->
-<!--
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -21,14 +18,13 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', 'PIXEL_ID');
+fbq('init', '988941216820297');
 fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
+src="https://www.facebook.com/tr?id=988941216820297&ev=PageView&noscript=1"
 /></noscript>
--->
-<!-- End Meta Pixel Placeholder -->
+<!-- End Meta Pixel Code -->
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,6 +116,23 @@ src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
   @keyframes fadeIn { from { opacity:0; transform: translateY(14px);} to { opacity:1; transform: translateY(0);} }
 
   .hero-lines { stroke: #C9A45C; stroke-width: 1; fill: none; opacity: .35; }
+  .hero-lines path { animation: heroDrift 9s ease-in-out infinite; }
+  .hero-lines path:nth-child(2) { animation-duration: 12s; animation-delay: -3s; }
+  .hero-lines circle { animation: heroPulse 3.2s ease-in-out infinite; transform-origin: center; }
+  .hero-lines circle:nth-of-type(2) { animation-delay: 1.1s; }
+  @keyframes heroDrift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  @keyframes heroPulse {
+    0%, 100% { opacity: .8; r: 4; }
+    50% { opacity: .25; r: 7; }
+  }
+  .scroll-cue { animation: scrollBounce 2s ease-in-out infinite; }
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); opacity: .6; }
+    50% { transform: translateY(8px); opacity: 1; }
+  }
 
   input::placeholder { color: #A3AFA8; }
 
@@ -170,8 +183,8 @@ src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
 
       <nav class="hidden lg:flex items-center gap-8 font-display text-sm text-cream/90">
         <a href="#home" class="nav-link">الرئيسية</a>
-        <a href="#areas" class="nav-link">مناطقنا</a>
         <a href="#properties" class="nav-link">العقارات</a>
+        <a href="#areas" class="nav-link">مناطقنا</a>
         <a href="#about" class="nav-link">من نحن</a>
         <a href="#contact" class="nav-link">تواصل معنا</a>
       </nav>
@@ -200,8 +213,8 @@ src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
   <div id="mobileMenu" class="hidden lg:hidden bg-emerald-dark border-t border-cream/10">
     <div class="px-5 py-4 flex flex-col gap-4 font-display text-cream/90">
       <a href="#home" class="mobile-nav-link">الرئيسية</a>
-      <a href="#areas" class="mobile-nav-link">مناطقنا</a>
       <a href="#properties" class="mobile-nav-link">العقارات</a>
+      <a href="#areas" class="mobile-nav-link">مناطقنا</a>
       <a href="#about" class="mobile-nav-link">من نحن</a>
       <a href="#contact" class="mobile-nav-link">تواصل معنا</a>
       <a id="mobileWhatsBtn" href="#" target="_blank" rel="noopener" class="bg-gold text-emerald-dark text-center font-800 rounded-sm py-2.5 mt-2">تواصل عبر واتساب</a>
@@ -256,19 +269,11 @@ src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
       </div>
     </div>
   </div>
-</section>
 
-<!-- =============================== -->
-<!-- AREAS / COMPOUNDS                -->
-<!-- =============================== -->
-<section id="areas" class="max-w-7xl mx-auto px-5 md:px-8 py-20">
-  <div class="text-center max-w-2xl mx-auto mb-14">
-    <span class="text-gold-dark font-display text-xs tracking-[0.3em]">أماكن تواجدنا</span>
-    <h2 class="font-display font-800 text-3xl md:text-4xl mt-3 mb-5">مناطقنا وكمبوندات نركّز عليها</h2>
-    <div class="blueprint-divider w-40 mx-auto"></div>
-  </div>
-
-  <div id="areasGrid" class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5"></div>
+  <a href="#properties" class="scroll-cue absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-cream/50 hover:text-gold transition" aria-label="تصفح العقارات">
+    <span class="text-[10px] font-display tracking-[0.2em]">شوف الوحدات</span>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+  </a>
 </section>
 
 <!-- =============================== -->
@@ -334,6 +339,19 @@ src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
   </div>
 
   <div id="propertyGrid" class="hidden grid sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+</section>
+
+<!-- =============================== -->
+<!-- AREAS / COMPOUNDS                -->
+<!-- =============================== -->
+<section id="areas" class="max-w-7xl mx-auto px-5 md:px-8 py-20">
+  <div class="text-center max-w-2xl mx-auto mb-14">
+    <span class="text-gold-dark font-display text-xs tracking-[0.3em]">أماكن تواجدنا</span>
+    <h2 class="font-display font-800 text-3xl md:text-4xl mt-3 mb-5">مناطقنا وكمبوندات نركّز عليها</h2>
+    <div class="blueprint-divider w-40 mx-auto"></div>
+  </div>
+
+  <div id="areasGrid" class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5"></div>
 </section>
 
 <!-- =============================== -->
@@ -509,7 +527,7 @@ src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"
         <li id="footerPhone1" dir="ltr"></li>
         <li id="footerPhone2" dir="ltr"></li>
         <li id="footerEmail" dir="ltr"></li>
-        <li> حي الأشجار - السنتر التجاري</li>
+        <li>حي الأشجار - السنتر التجاري</li>
       </ul>
     </div>
     <div>
@@ -612,8 +630,8 @@ const PHONE_DISPLAY_WHATSAPP = "0120 102 2305";
 const PHONE_DISPLAY_CALL     = "0109 129 3456";
 const COMPANY_EMAIL      = "info@trust-eg.com";
 const GOOGLE_MAPS_URL    = "https://maps.app.goo.gl/vPSUzAdS45ZqjWU16";
-const FACEBOOK_URL       = "PUT_YOUR_FACEBOOK_URL_HERE";
-const INSTAGRAM_URL      = "PUT_YOUR_INSTAGRAM_URL_HERE";
+const FACEBOOK_URL       = "https://www.facebook.com/TrustEstateAshgarRealEstateZayedAshgarCity";
+const INSTAGRAM_URL      = "https://www.instagram.com/trustestate3";
 
 const FOCUS_AREAS = [
   { name: "دريم لاند", desc: "كمبوند سكني هادئ بمساحات خضراء واسعة غرب القاهرة." },
