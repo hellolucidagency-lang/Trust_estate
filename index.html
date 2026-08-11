@@ -593,6 +593,10 @@ src="https://www.facebook.com/tr?id=988941216820297&ev=PageView&noscript=1"
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 4a2 2 0 012-2h2.5a1 1 0 011 .8l1 4a1 1 0 01-.5 1.1L6.6 9.1a12 12 0 006.3 6.3l1.2-1.4a1 1 0 011.1-.5l4 1a1 1 0 01.8 1V20a2 2 0 01-2 2h-1C10.5 22 2 13.5 2 4z"/></svg>
           اتصل بنا
         </a>
+        <a id="modalMapBtn" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 border border-gold text-gold-dark font-display font-700 rounded-sm px-6 py-3.5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-4.2-7-7.9-7-11a7 7 0 1114 0c0 3.1-2.5 6.8-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          Trust Location
+        </a>
       </div>
     </div>
   </div>
@@ -876,9 +880,13 @@ function renderCard(p) {
       </div>
       ${p.installment ? `<p class="text-xs text-emerald font-display font-700 mb-3">نظام التقسيط: ${p.installment}</p>` : ''}
       <p class="text-sm text-ink/60 leading-relaxed mb-5 line-clamp-2">${p.description || ''}</p>
-      <div class="flex gap-3">
-        <a href="${propertyWhatsLink(p)}" target="_blank" rel="noopener" class="flex-1 text-center bg-[#25D366] text-white text-sm font-display font-700 rounded-sm py-2.5">واتساب</a>
-        <button data-open-detail="${p.id}" class="flex-1 border border-emerald text-emerald text-sm font-display font-700 rounded-sm py-2.5">التفاصيل</button>
+      <div class="flex flex-wrap gap-2">
+        <a href="${propertyWhatsLink(p)}" target="_blank" rel="noopener" class="flex-1 min-w-[90px] text-center bg-[#25D366] text-white text-xs sm:text-sm font-display font-700 rounded-sm py-2.5">واتساب</a>
+        <button data-open-detail="${p.id}" class="flex-1 min-w-[90px] border border-emerald text-emerald text-xs sm:text-sm font-display font-700 rounded-sm py-2.5">التفاصيل</button>
+        <a href="${GOOGLE_MAPS_URL}" target="_blank" rel="noopener" class="flex-1 min-w-[90px] flex items-center justify-center gap-1 border border-gold text-gold-dark text-xs sm:text-sm font-display font-700 rounded-sm py-2.5">
+          <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-4.2-7-7.9-7-11a7 7 0 1114 0c0 3.1-2.5 6.8-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          Trust Location
+        </a>
       </div>
     </div>
   `;
@@ -995,6 +1003,7 @@ const modalInstallment = document.getElementById('modalInstallment');
 const modalDesc        = document.getElementById('modalDesc');
 const modalWhatsBtn    = document.getElementById('modalWhatsBtn');
 const modalCallBtn     = document.getElementById('modalCallBtn');
+const modalMapBtn      = document.getElementById('modalMapBtn');
 
 let currentProperty = null;
 let currentImageIndex = 0;
@@ -1014,6 +1023,7 @@ function openDetailModal(id) {
   modalDesc.textContent = p.description || 'لا يوجد وصف إضافي لهذا العقار حالياً.';
   modalWhatsBtn.href = propertyWhatsLink(p);
   modalCallBtn.href = propertyCallLink(p);
+  modalMapBtn.href = GOOGLE_MAPS_URL;
 
   renderModalImage();
   renderModalThumbs();
