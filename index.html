@@ -577,7 +577,13 @@ src="https://www.facebook.com/tr?id=988941216820297&ev=PageView&noscript=1"
         <span id="modalType" class="inline-block bg-emerald text-cream text-xs font-display font-700 px-3 py-1.5 rounded-sm"></span>
         <span id="modalPrice" class="font-display font-900 text-2xl text-gold-dark"></span>
       </div>
-      <h3 id="modalTitle" class="font-display font-800 text-2xl mb-3"></h3>
+      <div class="flex items-center justify-between gap-3 mb-3">
+        <h3 id="modalTitle" class="font-display font-800 text-2xl"></h3>
+        <button id="modalCopyLinkBtn" class="shrink-0 flex items-center gap-1.5 text-xs font-display font-700 text-emerald border border-emerald rounded-sm px-3 py-2 hover:bg-emerald hover:text-cream transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5l4-4a3 3 0 114.24 4.24l-4 4a3 3 0 01-4.24 0M10.5 13.5l-4 4a3 3 0 01-4.24-4.24l4-4a3 3 0 014.24 0"/></svg>
+          <span id="modalCopyLinkText">نسخ رابط الوحدة</span>
+        </button>
+      </div>
       <div class="flex flex-wrap gap-5 text-sm text-muted mb-5 font-display">
         <span id="modalLocation" class="flex items-center gap-1.5"></span>
         <span id="modalArea" class="flex items-center gap-1.5"></span>
@@ -808,6 +814,7 @@ function csvToProperties(csvText) {
     phone:       findColumnIndex(headers, ['رقم التواصل', 'رقم الهاتف', 'التواصل', 'هاتف', 'جوال', 'واتساب']),
     images:      findColumnIndex(headers, ['صور']),
     title:       findColumnIndex(headers, ['اسم', 'عنوان', 'العقار']),
+    unitCode:    findColumnIndex(headers, ['كود الوحدة', 'كود العقار', 'الكود']),
   };
 
   const data = [];
@@ -818,8 +825,12 @@ function csvToProperties(csvText) {
     const imagesRaw = idx.images > -1 ? (cols[idx.images] || '') : '';
     const images = imagesRaw.split(',').map(s => s.trim()).filter(Boolean).map(enhanceCloudinaryUrl);
 
+    const unitCode = idx.unitCode > -1 ? (cols[idx.unitCode] || '').trim() : '';
+
     data.push({
       id: r,
+      unitCode: unitCode,
+      slug: encodeURIComponent(unitCode || ('id' + r)),
       type: idx.type > -1 ? (cols[idx.type] || '').trim() : '',
       title: idx.title > -1 ? (cols[idx.title] || '').trim() : '',
       price: idx.price > -1 ? (cols[idx.price] || '').trim() : '',
@@ -857,17 +868,18 @@ function renderCard(p) {
   const card = document.createElement('div');
   card.className = 'prop-card fade-in bg-white rounded-md shadow-card overflow-hidden relative border border-creamdark/60';
   card.innerHTML = `
-    <div class="prop-img-wrap relative h-56 cursor-pointer" data-open-detail="${p.id}">
+    <a href="#unit-${p.slug}" class="prop-img-wrap relative h-56 block" data-open-detail="${p.id}">
       <span class="badge-ribbon">${p.type || 'عقار'}</span>
       <img src="${p.images[0]}" alt="${p.title || p.type}" class="w-full h-full object-cover" loading="lazy">
-    </div>
+    </a>
     <div class="p-6">
       <div class="flex items-center justify-between mb-3">
         <span class="font-display font-900 text-gold-dark text-lg">${formatPrice(p.price)}</span>
+        ${p.unitCode ? `<span class="text-[11px] text-muted font-display" dir="ltr">#${p.unitCode}</span>` : ''}
       </div>
-      <h3 class="font-display font-700 text-lg mb-2 cursor-pointer hover:text-emerald transition" data-open-detail="${p.id}">
+      <a href="#unit-${p.slug}" class="font-display font-700 text-lg mb-2 block hover:text-emerald transition" data-open-detail="${p.id}">
         ${p.title || (p.type + ' - ' + p.location)}
-      </h3>
+      </a>
       <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted font-display mb-3">
         <span class="flex items-center gap-1">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-4.2-7-7.9-7-11a7 7 0 1114 0c0 3.1-2.5 6.8-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
@@ -882,7 +894,7 @@ function renderCard(p) {
       <p class="text-sm text-ink/60 leading-relaxed mb-5 line-clamp-2">${p.description || ''}</p>
       <div class="flex flex-wrap gap-2">
         <a href="${propertyWhatsLink(p)}" target="_blank" rel="noopener" class="flex-1 min-w-[90px] text-center bg-[#25D366] text-white text-xs sm:text-sm font-display font-700 rounded-sm py-2.5">واتساب</a>
-        <button data-open-detail="${p.id}" class="flex-1 min-w-[90px] border border-emerald text-emerald text-xs sm:text-sm font-display font-700 rounded-sm py-2.5">التفاصيل</button>
+        <a href="#unit-${p.slug}" data-open-detail="${p.id}" class="flex-1 min-w-[90px] text-center border border-emerald text-emerald text-xs sm:text-sm font-display font-700 rounded-sm py-2.5">التفاصيل</a>
         <a href="${GOOGLE_MAPS_URL}" target="_blank" rel="noopener" class="flex-1 min-w-[90px] flex items-center justify-center gap-1 border border-gold text-gold-dark text-xs sm:text-sm font-display font-700 rounded-sm py-2.5">
           <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-4.2-7-7.9-7-11a7 7 0 1114 0c0 3.1-2.5 6.8-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
           Trust Location
@@ -979,12 +991,34 @@ async function loadProperties() {
 
     populateFilters(allProperties);
     renderGrid(allProperties);
+    handleHashRoute();
   } catch (err) {
     console.error('تعذر تحميل بيانات العقارات:', err);
     loadingState.classList.add('hidden');
     errorState.classList.remove('hidden');
   }
 }
+
+// دعم الروابط المباشرة لكل وحدة عبر كود الوحدة (#unit-الكود)
+function findPropertyBySlug(rawSlug) {
+  if (!rawSlug) return null;
+  let decoded;
+  try { decoded = decodeURIComponent(rawSlug); } catch (e) { decoded = rawSlug; }
+  return allProperties.find(p => {
+    let pDecoded;
+    try { pDecoded = decodeURIComponent(p.slug); } catch (e) { pDecoded = p.slug; }
+    return pDecoded === decoded;
+  }) || null;
+}
+
+function handleHashRoute() {
+  const hash = window.location.hash;
+  if (!hash || !hash.startsWith('#unit-')) return;
+  const match = findPropertyBySlug(hash.slice('#unit-'.length));
+  if (match) openDetailModal(match.id);
+}
+
+window.addEventListener('hashchange', handleHashRoute);
 
 document.getElementById('retryBtn').addEventListener('click', loadProperties);
 
@@ -1004,9 +1038,23 @@ const modalDesc        = document.getElementById('modalDesc');
 const modalWhatsBtn    = document.getElementById('modalWhatsBtn');
 const modalCallBtn     = document.getElementById('modalCallBtn');
 const modalMapBtn      = document.getElementById('modalMapBtn');
+const modalCopyLinkBtn = document.getElementById('modalCopyLinkBtn');
+const modalCopyLinkText = document.getElementById('modalCopyLinkText');
 
 let currentProperty = null;
 let currentImageIndex = 0;
+
+modalCopyLinkBtn.addEventListener('click', async () => {
+  if (!currentProperty) return;
+  const unitUrl = window.location.origin + window.location.pathname + '#unit-' + currentProperty.slug;
+  try {
+    await navigator.clipboard.writeText(unitUrl);
+    modalCopyLinkText.textContent = 'تم النسخ ✓';
+    setTimeout(() => { modalCopyLinkText.textContent = 'نسخ رابط الوحدة'; }, 2000);
+  } catch (e) {
+    modalCopyLinkText.textContent = unitUrl;
+  }
+});
 
 function openDetailModal(id) {
   const p = allProperties.find(x => x.id === id);
@@ -1060,6 +1108,9 @@ function closeDetailModal() {
   detailModal.classList.add('hidden');
   detailModal.classList.remove('flex');
   document.body.style.overflow = '';
+  if (window.location.hash.startsWith('#unit-')) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
 }
 
 document.getElementById('closeModalBtn').addEventListener('click', closeDetailModal);
