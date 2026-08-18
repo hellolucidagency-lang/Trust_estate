@@ -4,38 +4,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لوحة التحكم | Trust Real Estate Listings</title>
+  <!-- Google Fonts & FontAwesome -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- مكتبة EmailJS -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   
   <style>
-    :root { --primary: #1e3a8a; --primary-dark: #0f172a; --accent: #d97706; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; }
+    :root { --primary: #1e3a8a; --primary-dark: #0f172a; --accent: #d97706; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; --danger: #ef4444; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
     body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; }
+    
+    /* Sidebar */
     .sidebar { width: 280px; background: var(--primary-dark); color: #fff; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px; position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 50; }
     .brand { display: flex; align-items: center; gap: 12px; padding: 0 8px; }
     .brand i { font-size: 28px; color: var(--accent); }
-    .brand h2 { font-size: 20px; font-weight: 800; }
     .nav-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: #cbd5e1; cursor: pointer; transition: all 0.2s; font-size: 14px; font-weight: 600;}
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: #cbd5e1; cursor: pointer; font-size: 14px; font-weight: 600;}
     .nav-item:hover, .nav-item.active { background: var(--accent); color: #fff; }
+    
+    /* Main */
     .main-content { flex: 1; padding: 32px; overflow-y: auto; height: 100vh; }
     .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
     .btn { padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: none; }
     .btn-primary { background: var(--accent); color: #fff; }
-    .auth-input { width: 100%; padding: 12px; margin-bottom: 16px; border: 1px solid #cbd5e1; border-radius: 8px; text-align: center; font-size: 14px; }
+    
+    /* Modals */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal-container { background: #fff; border-radius: 12px; width: 100%; max-width: 600px; }
+    .modal-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+    .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+    .form-group label { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block;}
+    .form-control { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+    .auth-input { width: 100%; padding: 12px; margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; text-align: center; }
   </style>
 </head>
 <body>
 
-  <!-- شاشة الدخول بالإيميل -->
+  <!-- شاشة الدخول (الإيميل + الكود) -->
   <div id="authScreen" style="position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;">
     <div style="background: #fff; padding: 32px; border-radius: 14px; width: 100%; max-width: 420px; text-align: center;">
       <i class="fa-solid fa-envelope-circle-check" style="font-size: 44px; color: #1e3a8a; margin-bottom: 16px;"></i>
       
       <div id="emailStep">
-        <h3 style="color: #1e3a8a; margin-bottom: 8px;">تسجيل الدخول الآمن</h3>
+        <h3 style="color: #1e3a8a; margin-bottom: 8px;">تسجيل الدخول</h3>
         <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">أدخل بريدك الإلكتروني لاستلام كود الدخول</p>
         <input type="email" id="adminEmail" class="auth-input" placeholder="example@domain.com">
         <button onclick="sendOTP()" class="btn btn-primary" style="width: 100%; justify-content: center;">إرسال كود التأكيد</button>
@@ -43,11 +54,10 @@
 
       <div id="otpStep" style="display: none;">
         <h3 style="color: #1e3a8a; margin-bottom: 8px;">أدخل كود التأكيد</h3>
-        <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">تم إرسال كود من 6 أرقام إلى بريدك</p>
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">تم إرسال كود من 6 أرقام</p>
         <input type="text" id="adminOTP" class="auth-input" placeholder="123456" maxlength="6">
         <button onclick="verifyOTP()" class="btn btn-primary" style="width: 100%; justify-content: center; background: #10b981;">تأكيد ودخول</button>
       </div>
-
       <p id="authMsg" style="color: #ef4444; font-size: 13px; margin-top: 16px; display: none; font-weight: bold;"></p>
     </div>
   </div>
@@ -57,65 +67,101 @@
     <div class="brand"><i class="fa-solid fa-building-shield"></i><div><h2>تراست العقارية</h2></div></div>
     <ul class="nav-list">
       <li class="nav-item active"><i class="fa-solid fa-layer-group"></i> كل العقارات</li>
-      <li class="nav-item"><i class="fa-solid fa-gear"></i> إعدادات الربط</li>
+      <li class="nav-item" onclick="openModal('settingsModal')"><i class="fa-solid fa-gear"></i> إعدادات الربط</li>
     </ul>
   </aside>
 
-  <!-- محتوى اللوحة -->
+  <!-- محتوى اللوحة الرئيسي -->
   <main class="main-content">
     <header class="top-header">
       <div>
-        <h1 style="color: var(--primary-dark);">مرحباً بك في لوحة الإدارة</h1>
+        <h1 style="color: var(--primary-dark);">إدارة الوحدات</h1>
       </div>
-      <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> إضافة وحدة جديدة</button>
+      <button class="btn btn-primary" onclick="openModal('propertyModal')"><i class="fa-solid fa-plus"></i> إضافة وحدة جديدة</button>
     </header>
-    <div style="background: #fff; padding: 40px; border-radius: 12px; text-align: center; border: 1px dashed #cbd5e1;">
-      <h2 style="color: #64748b;">اللوحة تعمل بنجاح بعد تسجيل الدخول!</h2>
+    
+    <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+      <h3 style="margin-bottom: 15px;">الوحدات المضافة مؤخراً</h3>
+      <p style="color: #64748b; font-size: 14px;">(سيتم عرض الوحدات هنا بعد ربطها بملف الـ CSV الخاص بـ GitHub من خلال الإعدادات)</p>
     </div>
   </main>
 
-  <script>
-    let generatedCode = "";
+  <!-- نافذة إضافة عقار -->
+  <div class="modal-overlay" id="propertyModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>إضافة عقار جديد</h3>
+        <button onclick="closeModal('propertyModal')" style="border:none; background:none; font-size:20px; cursor:pointer;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>السعر</label><input type="text" class="form-control" placeholder="مثال: 1,500,000"></div>
+        <div class="form-group"><label>المنطقة</label><input type="text" class="form-control" placeholder="مثال: التجمع الخامس"></div>
+        <button onclick="closeModal('propertyModal'); alert('تم الحفظ مؤقتاً! جاري تجهيز الربط.');" class="btn btn-primary">حفظ ونشر</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- نافذة الإعدادات -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>إعدادات الربط بـ GitHub</h3>
+        <button onclick="closeModal('settingsModal')" style="border:none; background:none; font-size:20px; cursor:pointer;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>مسار المستودع (Repo)</label><input type="text" id="ghRepo" class="form-control" placeholder="hellolucidagency-lang/Trust_estate"></div>
+        <div class="form-group"><label>توكن الحماية (Token)</label><input type="password" id="ghToken" class="form-control" placeholder="github_pat_..."></div>
+        <button onclick="saveSettings()" class="btn btn-primary" style="background: #10b981;">حفظ الإعدادات</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- أكواد الدخول بالإيميل ---
+    let generatedCode = "";
+    
     window.addEventListener('DOMContentLoaded', () => {
       if(sessionStorage.getItem('trust_logged_in') === 'true') {
         document.getElementById('authScreen').style.display = 'none';
       }
+      // استرجاع الإعدادات المحفوظة
+      document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
+      document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
     });
 
     function showMsg(msg, color = '#ef4444') {
       const msgEl = document.getElementById('authMsg');
-      msgEl.innerText = msg;
-      msgEl.style.color = color;
-      msgEl.style.display = 'block';
+      msgEl.innerText = msg; msgEl.style.color = color; msgEl.style.display = 'block';
     }
 
     function sendOTP() {
       const email = document.getElementById('adminEmail').value.trim();
-      if(!email.includes('@')) {
-        showMsg('يرجى إدخال بريد إلكتروني صحيح');
-        return;
-      }
+      if(!email.includes('@')) { showMsg('يرجى إدخال بريد صحيح'); return; }
       
-      // إنشاء كود عشوائي من 6 أرقام
       generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-      
-      // للتجربة المؤقتة: هنعرض الكود في رسالة بدل الإيميل لحد ما نربط EmailJS
-      alert("للتجربة قبل ربط الإيميل الحقيقي.. كود الدخول الخاص بك هو: " + generatedCode);
+      alert("للتجربة: كود الدخول الخاص بك هو: " + generatedCode); // هذا سيستبدل بالبريد لاحقاً
       
       document.getElementById('emailStep').style.display = 'none';
       document.getElementById('otpStep').style.display = 'block';
-      showMsg('تم الإرسال! (يظهر في رسالة منبثقة للتجربة حالياً)', '#10b981');
+      showMsg('تم الإرسال بنجاح', '#10b981');
     }
 
     function verifyOTP() {
-      const userCode = document.getElementById('adminOTP').value.trim();
-      if(userCode === generatedCode) {
+      if(document.getElementById('adminOTP').value.trim() === generatedCode) {
         sessionStorage.setItem('trust_logged_in', 'true');
         document.getElementById('authScreen').style.display = 'none';
-      } else {
-        showMsg('الكود غير صحيح، حاول مرة أخرى');
-      }
+      } else { showMsg('الكود غير صحيح!'); }
+    }
+
+    // --- أكواد النوافذ والإعدادات ---
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    
+    function saveSettings() {
+      localStorage.setItem('gh_repo', document.getElementById('ghRepo').value.trim());
+      localStorage.setItem('gh_token', document.getElementById('ghToken').value.trim());
+      alert("تم حفظ إعدادات GitHub بنجاح!");
+      closeModal('settingsModal');
     }
   </script>
 </body>
