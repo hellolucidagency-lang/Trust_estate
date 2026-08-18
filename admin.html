@@ -1,0 +1,133 @@
+<!-- Auth Overlay: First Time Setup & 2FA Login -->
+<div id="authScreen" style="position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'Cairo', sans-serif;">
+  <div style="background: #fff; padding: 32px; border-radius: 14px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);">
+    <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: #d97706; margin-bottom: 12px;"></i>
+    
+    <!-- State 1: First-Time Password Setup -->
+    <div id="setupBox" style="display: none;">
+      <h3 style="color: #1e3a8a; margin-bottom: 6px;">تعيين حماية لوحة التحكم</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 18px;">قم بتعيين كلمة مرور خاصة بك لتأمين إدارة العقارات</p>
+      
+      <input type="password" id="newAdminPass" placeholder="اختر كلمة المرور الجديدة" style="width: 100%; padding: 11px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; text-align: center;">
+      <input type="text" id="tgChatId" placeholder="معرّف تليجرام لاستلام أكواد الدخول (Chat ID)" style="width: 100%; padding: 11px; margin-bottom: 18px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; text-align: center;">
+      
+      <button onclick="saveInitialSetup()" style="width: 100%; padding: 12px; background: #d97706; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">حفظ وتفعيل الحماية</button>
+    </div>
+
+    <!-- State 2: Standard Login -->
+    <div id="loginBox" style="display: none;">
+      <h3 style="color: #1e3a8a; margin-bottom: 6px;">تسجيل الدخول للأدمن</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 18px;">لوحة تحكم مكتب تراست العقارية</p>
+      
+      <input type="password" id="inputPass" placeholder="أدخل كلمة المرور" style="width: 100%; padding: 11px; margin-bottom: 16px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; text-align: center;">
+      <button onclick="validatePassword()" style="width: 100%; padding: 12px; background: #1e3a8a; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">متابعة الدخول</button>
+    </div>
+
+    <!-- State 3: OTP Verification for New Devices -->
+    <div id="otpBox" style="display: none;">
+      <h3 style="color: #1e3a8a; margin-bottom: 6px;">تأكيد الجهاز الجديد (2FA)</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">تم إرسال كود تأكيد مكون من 6 أرقام إلى تليجرام الخاص بك</p>
+      
+      <input type="text" id="inputOtp" maxlength="6" placeholder="000000" style="width: 100%; padding: 12px; margin-bottom: 16px; border: 2px solid #d97706; border-radius: 8px; font-size: 20px; text-align: center; letter-spacing: 6px; font-weight: bold;">
+      <button onclick="verifyOtpCode()" style="width: 100%; padding: 12px; background: #10b981; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">تأكيد ودخول</button>
+    </div>
+
+    <p id="authMsg" style="color: #ef4444; font-size: 12px; margin-top: 12px; display: none;"></p>
+  </div>
+</div>
+
+<script>
+  // بيانات البوت لإرسال الـ OTP
+  const TELEGRAM_BOT_TOKEN = "ضع_توكن_بوت_تليجرام_هنا"; 
+  let generatedOTP = null;
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedPass = localStorage.getItem('trust_admin_pass');
+    const isDeviceTrusted = localStorage.getItem('trust_device_verified');
+
+    if (!savedPass) {
+      document.getElementById('setupBox').style.display = 'block';
+    } else {
+      document.getElementById('loginBox').style.display = 'block';
+    }
+  });
+
+  function saveInitialSetup() {
+    const pass = document.getElementById('newAdminPass').value.trim();
+    const chatId = document.getElementById('tgChatId').value.trim();
+    
+    if (pass.length < 4) {
+      showError('يرجى كتابة باسوورد قوي من 4 خانات على الأقل');
+      return;
+    }
+    
+    localStorage.setItem('trust_admin_pass', pass);
+    if(chatId) localStorage.setItem('trust_admin_chat_id', chatId);
+    localStorage.setItem('trust_device_verified', 'true'); // الجهاز الأول موثوق تلقائياً
+
+    document.getElementById('authScreen').style.display = 'none';
+    showToast('تم ضبط الباسوورد بنجاح وتفعيل اللوحة!', 'success');
+  }
+
+  function validatePassword() {
+    const input = document.getElementById('inputPass').value.trim();
+    const savedPass = localStorage.getItem('trust_admin_pass');
+    const isDeviceTrusted = localStorage.getItem('trust_device_verified');
+
+    if (input !== savedPass) {
+      showError('كلمة المرور غير صحيحة');
+      return;
+    }
+
+    // لو الجهاز موثوق يدخل فوراً
+    if (isDeviceTrusted === 'true') {
+      document.getElementById('authScreen').style.display = 'none';
+      sessionStorage.setItem('trust_logged_in', 'true');
+    } else {
+      // جهاز جديد: توليد OTP وإرساله عبر تليجرام
+      sendOtpToTelegram();
+    }
+  }
+
+  async function sendOtpToTelegram() {
+    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+    const chatId = localStorage.getItem('trust_admin_chat_id');
+
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('otpBox').style.display = 'block';
+
+    if (chatId && TELEGRAM_BOT_TOKEN) {
+      const msg = `⚠️ تنبيه أمني - تراست العقارية\n\nهناك محاولة لتسجيل الدخول إلى لوحة التحكم من جهاز جديد.\nرمز التحقق الخاص بك هو:\n👉 ${generatedOTP}`;
+      try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ chat_id: chatId, text: msg })
+        });
+      } catch (e) {
+        console.error("فشل إرسال التيليجرام", e);
+      }
+    } else {
+      // تنبيه في حالة عدم ربط البوت بعد
+      alert(`كود التحقق التجريبي (لأن البوت غير مرتبط): ${generatedOTP}`);
+    }
+  }
+
+  function verifyOtpCode() {
+    const code = document.getElementById('inputOtp').value.trim();
+    if (code === generatedOTP) {
+      localStorage.setItem('trust_device_verified', 'true');
+      sessionStorage.setItem('trust_logged_in', 'true');
+      document.getElementById('authScreen').style.display = 'none';
+      showToast('تم التحقق من الجهاز بنجاح!', 'success');
+    } else {
+      showError('كود التأكيد غير صحيح، حاول مرة أخرى');
+    }
+  }
+
+  function showError(text) {
+    const m = document.getElementById('authMsg');
+    m.innerText = text;
+    m.style.display = 'block';
+  }
+</script>
