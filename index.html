@@ -1715,6 +1715,33 @@ async function loadFinishes() {
 /* ============================================================
    جلب البيانات من n8n Webhook عبر POST
    ============================================================ */
+/* ============================================================
+   لوحة تشخيص اختيارية — لا تظهر إلا عند فتح الموقع بإضافة ?debug=1 للرابط
+   ============================================================ */
+const DEBUG_MODE = /[?&]debug=1\b/.test(location.search);
+function debugPanel(records, source) {
+  if (!DEBUG_MODE) return;
+  let box = document.getElementById('debugBox');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'debugBox';
+    box.style.cssText = 'position:fixed;bottom:8px;right:8px;z-index:99999;max-width:92vw;max-height:55vh;overflow:auto;background:rgba(0,0,0,.88);color:#9f9;font:11px/1.5 monospace;padding:8px 10px;border-radius:6px;direction:ltr;white-space:pre-wrap';
+    document.body.appendChild(box);
+  }
+  const lines = ['[' + new Date().toLocaleTimeString() + '] data from: ' + source + '  |  shape: ' + (window.__dbgShape || '-')];
+  if (!Array.isArray(records)) {
+    lines.push('records: none');
+  } else {
+    lines.push('records: ' + records.length + '  |  columns: ' + Object.keys(records[0] || {}).join(', '));
+    lines.push('top 5 on the site  (code | status | آخر تحديث | parsed):');
+    allProperties.slice(0, 5).forEach(p => {
+      const r = records.find(x => String(x['كود الوحدة'] || '').trim() === p.unitCode) || {};
+      lines.push('  ' + p.unitCode + ' | ' + p.status + ' | ' + (r['آخر تحديث'] || '?') + ' | ' + p.timestamp);
+    });
+  }
+  box.textContent += lines.join('\n') + '\n\n';
+}
+
 let firstRender = true;
 const CACHE_KEY = 'te_cache_v2';
 
@@ -1728,8 +1755,9 @@ function writeCache(records) {
   try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), records })); } catch (e) {}
 }
 
-function showRecords(records) {
+function showRecords(records, source) {
   allProperties = jsonToProperties(records);
+  debugPanel(records, source);
   loadingState.classList.add('hidden');
   errorState.classList.add('hidden');
 
@@ -1752,7 +1780,7 @@ async function loadProperties() {
   setupNotice.classList.add('hidden');
   errorState.classList.add('hidden');
   if (hadCache) {
-    showRecords(cached);
+    showRecords(cached, 'cache');
   } else {
     loadingState.classList.remove('hidden');
     propertyGrid.classList.add('hidden');
@@ -1797,16 +1825,18 @@ async function loadProperties() {
       : null;
 
     if (!records) throw new Error('Unexpected data format');
+    window.__dbgShape = Array.isArray(json) ? 'array' : Object.keys(json || {}).join('/');
     if (!FINISHES_READ_WEBHOOK_URL) showFinishes(Array.isArray(json?.finishes) ? json.finishes : []);
 
     // لا نعيد الرسم إذا لم تتغير البيانات (يمنع وميض الكروت)
     if (hadCache && JSON.stringify(records) === JSON.stringify(cached)) return;
     writeCache(records);
-    showRecords(records);
+    showRecords(records, 'server');
   } catch (err) {
     clearTimeout(timeoutId);
     const isTimeout = err.name === 'AbortError';
     console.error('تعذر تحميل بيانات العقارات:', err);
+    debugPanel(null, 'ERROR: ' + (err && err.message));
     if (!FINISHES_READ_WEBHOOK_URL && !finishesSettled) showFinishes([]);
     if (hadCache) return; // نترك البيانات المحفوظة معروضة بدون رسالة خطأ
     loadingState.classList.add('hidden');
